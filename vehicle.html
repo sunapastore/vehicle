@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="ne">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>सवारी व्यवस्थापन</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Nirmala UI', sans-serif;
+        }
+
+        body {
+            background: #f0f4f8;
+            padding: 1.5rem;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            background: #fff;
+            border-radius: 28px;
+            box-shadow: 0 20px 40px -10px rgba(0, 20, 30, 0.2);
+            padding: 2rem 2.2rem;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            border-bottom: 3px solid #d0e2f0;
+            padding-bottom: 0.8rem;
+            margin-bottom: 1.8rem;
+        }
+
+        .top-bar h1 {
+            font-size: 1.6rem;
+            color: #0b2b3d;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .top-bar h1 i {
+            color: #1a6f8f;
+        }
+
+        .back-btn {
+            text-decoration: none;
+            background: #e3ecf3;
+            padding: 0.5rem 1.2rem;
+            border-radius: 40px;
+            color: #1f4960;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: 0.2s;
+        }
+
+        .back-btn:hover {
+            background: #d0dce6;
+        }
+
+        /* Form Section */
+        .form-section {
+            background: #f8fafc;
+            padding: 1.5rem;
+            border-radius: 16px;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-section h3 {
+            margin-bottom: 1rem;
+            color: #0b2b3d;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 0.8rem 1.2rem;
+        }
+
+        .form-grid .full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-grid .half-width {
+            grid-column: span 2;
+        }
+
+        .field-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+        }
+
+        .field-group label {
+            font-weight: 600;
+            font-size: 0.8rem;
+            color: #1e4057;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .field-group label i {
+            color: #3a7b97;
+            width: 0.9rem;
+            font-size: 0.8rem;
+        }
+
+        .field-group input,
+        .field-group select,
+        .field-group textarea {
+            padding: 0.5rem 0.8rem;
+            border: 1px solid #dbe4eb;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            background: #fff;
+            outline: none;
+            width: 100%;
+        }
+
+        .field-group input:focus,
+        .field-group select:focus,
+        .field-group textarea:focus {
+            border-color: #2b7fa0;
+            box-shadow: 0 0 0 3px rgba(35, 120, 160, 0.15);
+        }
+
+        .field-group textarea {
+            resize: vertical;
+            min-height: 50px;
+        }
+
+        .field-group .readonly {
+            background: #eef4f9;
+            color: #1f4a61;
+            font-weight: 500;
+        }
+
+        .btn-row {
+            display: flex;
+            gap: 0.8rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            border: none;
+            padding: 0.5rem 1.8rem;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-primary {
+            background: #1b6a89;
+            color: #fff;
+        }
+        .btn-primary:hover {
+            background: #0f5773;
+        }
+        .btn-success {
+            background: #1d8a5f;
+            color: #fff;
+        }
+        .btn-success:hover {
+            background: #13724b;
+        }
+        .btn-danger {
+            background: #dc3545;
+            color: #fff;
+        }
+        .btn-danger:hover {
+            background: #b02a37;
+        }
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #b2ccdb;
+            color: #1f4960;
+        }
+        .btn-outline:hover {
+            background: #e2edf5;
+        }
+        .btn-warning {
+            background: #ffc107;
+            color: #1f4960;
+        }
+        .btn-warning:hover {
+            background: #e0a800;
+        }
+
+        /* Search & Table */
+        .search-box {
+            display: flex;
+            gap: 0.8rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .search-box input {
+            padding: 0.5rem 1rem;
+            border: 1px solid #dbe4eb;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            flex: 1;
+            min-width: 200px;
+            outline: none;
+        }
+
+        .search-box input:focus {
+            border-color: #2b7fa0;
+            box-shadow: 0 0 0 3px rgba(35, 120, 160, 0.15);
+        }
+
+        .table-wrap {
+            overflow-x: auto;
+            border-radius: 12px;
+            border: 1px solid #e8f0f5;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.82rem;
+            min-width: 800px;
+        }
+
+        th {
+            background: #eef5fa;
+            color: #1e4057;
+            padding: 0.6rem 0.6rem;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: 2px solid #d0e2f0;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 0.4rem 0.6rem;
+            border-bottom: 1px solid #e8f0f5;
+            vertical-align: middle;
+        }
+
+        tr:hover {
+            background: #f8fafc;
+        }
+
+        .action-btns {
+            display: flex;
+            gap: 4px;
+            flex-wrap: wrap;
+        }
+
+        .action-btns button {
+            border: none;
+            padding: 0.2rem 0.6rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            transition: 0.2s;
+        }
+
+        .action-btns .edit {
+            background: #d9e9f2;
+            color: #004466;
+        }
+        .action-btns .edit:hover {
+            background: #b5d4e3;
+        }
+        .action-btns .delete {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        .action-btns .delete:hover {
+            background: #f5c6cb;
+        }
+
+        .status-badge {
+            padding: 0.15rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .status-active {
+            background: #d4edda;
+            color: #155724;
+        }
+        .status-inactive {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        .status-maintenance {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #0d3144;
+            color: #fff;
+            padding: 0.7rem 2rem;
+            border-radius: 60px;
+            font-weight: 500;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+            z-index: 999;
+            opacity: 0;
+            transition: 0.25s;
+            pointer-events: none;
+        }
+
+        .toast.show {
+            opacity: 1;
+        }
+        .toast.success {
+            background: #1b7a56;
+        }
+        .toast.error {
+            background: #a13d3d;
+        }
+        .toast.info {
+            background: #0d6efd;
+        }
+
+        @media (max-width: 992px) {
+            .form-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .half-width {
+                grid-column: span 1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            .top-bar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .btn-row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .btn {
+                justify-content: center;
+            }
+            .search-box {
+                flex-direction: column;
+            }
+            .search-box input {
+                min-width: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="top-bar">
+            <h1><i class="fas fa-truck"></i> सवारी व्यवस्थापन</h1>
+            <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i> ड्यासबोर्ड</a>
+        </div>
+
+        <!-- Add/Edit Form -->
+        <div class="form-section">
+            <h3 id="formTitle"><i class="fas fa-plus-circle"></i> नयाँ सवारी थप्नुहोस्</h3>
+            <form id="vehicleForm">
+                <input type="hidden" id="editVehicleId" name="Vehicle_ID">
+                <div class="form-grid">
+                    <!-- Vehicle No -->
+                    <div class="field-group">
+                        <label><i class="fas fa-hashtag"></i> सवारी नं. <span style="color:red;">*</span></label>
+                        <input type="text" id="vehicleNo" name="Vehicle_No" placeholder="Ba 1 Cha 1234" required>
+                    </div>
+
+                    <!-- Vehicle Type -->
+                    <div class="field-group">
+                        <label><i class="fas fa-car"></i> सवारी प्रकार</label>
+                        <input type="text" id="vehicleType" name="Vehicle_Type" placeholder="ट्रक, बस, जिप">
+                    </div>
+
+                    <!-- Vehicle Model -->
+                    <div class="field-group">
+                        <label><i class="fas fa-calendar"></i> सवारी मोडेल</label>
+                        <input type="text" id="vehicleModel" name="Vehicle_Model" placeholder="२०७८">
+                    </div>
+
+                    <!-- Company -->
+                    <div class="field-group">
+                        <label><i class="fas fa-building"></i> कम्पनी</label>
+                        <input type="text" id="company" name="Company" placeholder="कम्पनीको नाम">
+                    </div>
+
+                    <!-- Engine No -->
+                    <div class="field-group">
+                        <label><i class="fas fa-engine"></i> इन्जिन नं.</label>
+                        <input type="text" id="engineNo" name="Engine_No" placeholder="इन्जिन नं.">
+                    </div>
+
+                    <!-- Chassis No -->
+                    <div class="field-group">
+                        <label><i class="fas fa-grip-lines"></i> चेसिस नं.</label>
+                        <input type="text" id="chassisNo" name="Chassis_No" placeholder="चेसिस नं.">
+                    </div>
+
+                    <!-- Fuel Type -->
+                    <div class="field-group">
+                        <label><i class="fas fa-gas-pump"></i> इन्धन प्रकार</label>
+                        <select id="fuelType" name="Fuel_Type">
+                            <option value="">छान्नुहोस्</option>
+                            <option value="पेट्रोल">पेट्रोल</option>
+                            <option value="डिजेल">डिजेल</option>
+                            <option value="ग्यास">ग्यास</option>
+                            <option value="इलेक्ट्रिक">इलेक्ट्रिक</option>
+                            <option value="हाइब्रिड">हाइब्रिड</option>
+                        </select>
+                    </div>
+
+                    <!-- Driver Name -->
+                    <div class="field-group">
+                        <label><i class="fas fa-user"></i> चालकको नाम</label>
+                        <select id="driverName" name="Driver_Name">
+                            <option value="">छान्नुहोस्</option>
+                        </select>
+                    </div>
+
+                    <!-- Purchase Date -->
+                    <div class="field-group">
+                        <label><i class="fas fa-calendar-plus"></i> खरिद मिति</label>
+                        <input type="text" id="purchaseDate" name="Purchase_Date" placeholder="२०८०-०१-१५" maxlength="10">
+                    </div>
+
+                    <!-- Registration Date -->
+                    <div class="field-group">
+                        <label><i class="fas fa-calendar-check"></i> दर्ता मिति</label>
+                        <input type="text" id="registrationDate" name="Registration_Date" placeholder="२०८०-०१-१५" maxlength="10">
+                    </div>
+
+                    <!-- Registration No -->
+                    <div class="field-group">
+                        <label><i class="fas fa-id-card"></i> दर्ता नं.</label>
+                        <input type="text" id="registrationNo" name="Registration_No" placeholder="दर्ता नं.">
+                    </div>
+
+                    <!-- Insurance Expiry -->
+                    <div class="field-group">
+                        <label><i class="fas fa-shield-alt"></i> बीमा म्याद</label>
+                        <input type="text" id="insuranceExpiry" name="Insurance_Expiry" placeholder="२०८१-०१-१५" maxlength="10">
+                    </div>
+
+                    <!-- Bluebook Expiry -->
+                    <div class="field-group">
+                        <label><i class="fas fa-book"></i> ब्लुबुक म्याद</label>
+                        <input type="text" id="bluebookExpiry" name="Bluebook_Expiry" placeholder="२०८१-०१-१५" maxlength="10">
+                    </div>
+
+                    <!-- Status -->
+                    <div class="field-group">
+                        <label><i class="fas fa-flag"></i> स्थिति</label>
+                        <select id="status" name="Status">
+                            <option value="सक्रिय">सक्रिय</option>
+                            <option value="निष्क्रिय">निष्क्रिय</option>
+                            <option value="मर्मतमा">मर्मतमा</option>
+                        </select>
+                    </div>
+
+                    <!-- Remarks (Full Width) -->
+                    <div class="field-group full-width">
+                        <label><i class="fas fa-pen"></i> कैफियत</label>
+                        <textarea id="remarks" name="Remarks" rows="2" placeholder="अतिरिक्त जानकारी"></textarea>
+                    </div>
+                </div>
+
+                <div class="btn-row">
+                    <button type="submit" class="btn btn-primary" id="submitBtn"><i class="fas fa-save"></i> सुरक्षित</button>
+                    <button type="button" class="btn btn-warning" id="editFormBtn" style="display:none;"><i class="fas fa-edit"></i> सम्पादन</button>
+                    <button type="button" class="btn btn-outline" id="resetBtn"><i class="fas fa-undo-alt"></i> खाली</button>
+                    <button type="button" class="btn btn-outline" id="cancelEditBtn" style="display:none;"><i class="fas fa-times"></i> रद्द</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Search & Table -->
+        <div class="search-box">
+            <input type="text" id="searchVehicle" placeholder="🔍 सवारी खोज्नुहोस् (नं., प्रकार, मोडेल)...">
+            <button class="btn btn-primary" id="searchBtn" style="padding:0.5rem 1.2rem;"><i class="fas fa-search"></i> खोज</button>
+            <button class="btn btn-outline" id="refreshBtn" style="padding:0.5rem 1.2rem;"><i class="fas fa-sync"></i> रिफ्रेस</button>
+        </div>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>क्र.सं.</th>
+                        <th>सवारी नं.</th>
+                        <th>प्रकार</th>
+                        <th>मोडेल</th>
+                        <th>कम्पनी</th>
+                        <th>चालक</th>
+                        <th>स्थिति</th>
+                        <th style="text-align:center;">कार्य</th>
+                    </tr>
+                </thead>
+                <tbody id="vehicleTableBody">
+                    <tr>
+                        <td colspan="8" style="text-align:center;padding:2rem;color:#5d7f92;">
+                            <i class="fas fa-spinner fa-pulse"></i> लोड हुँदै...
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <script>
+        // ============================================================
+        // CONFIGURATION
+        // ============================================================
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxlPhy_16N--T89myiSGwWlwXeC8Qrh8-5xRf6z7Gua8ATFtPMUpqlmHj7jCkKhi_6A/exec";
+
+        let vehicleData = [];
+        let isEditing = false;
+
+        const toast = document.getElementById('toast');
+
+        // ============================================================
+        // TOAST
+        // ============================================================
+        function showToast(msg, type = 'success') {
+            toast.textContent = msg;
+            toast.className = 'toast show ' + type;
+            clearTimeout(toast._hideTimer);
+            toast._hideTimer = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3500);
+        }
+
+        // ============================================================
+        // LOAD DRIVERS FOR DROPDOWN
+        // ============================================================
+        function loadDrivers() {
+            const select = document.getElementById('driverName');
+            select.innerHTML = '<option value="">लोड हुँदै...</option>';
+
+            fetch(`${SCRIPT_URL}?action=drivers`)
+                .then(r => r.json())
+                .then(data => {
+                    select.innerHTML = '<option value="">छान्नुहोस्</option>';
+                    if (data.length === 0) {
+                        select.innerHTML = '<option value="">कुनै चालक छैन</option>';
+                        return;
+                    }
+                    data.forEach(row => {
+                        const name = row.Driver_Name || '';
+                        if (name) {
+                            select.innerHTML += `<option value="${name}">${name}</option>`;
+                        }
+                    });
+                })
+                .catch(() => {
+                    select.innerHTML = '<option value="">त्रुटि</option>';
+                });
+        }
+
+        // ============================================================
+        // LOAD VEHICLES
+        // ============================================================
+        function loadVehicles() {
+            const tbody = document.getElementById('vehicleTableBody');
+            tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:2rem;color:#5d7f92;">
+                <i class="fas fa-spinner fa-pulse"></i> लोड हुँदै...</td></tr>`;
+
+            fetch(`${SCRIPT_URL}?action=vehicles`)
+                .then(r => r.json())
+                .then(data => {
+                    vehicleData = Array.isArray(data) ? data : [];
+                    renderVehicles();
+                })
+                .catch(err => {
+                    console.error('Load error:', err);
+                    tbody.innerHTML =
+                        `<tr><td colspan="8" style="text-align:center;padding:2rem;color:#a13d3d;">
+                        <i class="fas fa-exclamation-circle"></i> लोड गर्न असफल</td></tr>`;
+                });
+        }
+
+        // ============================================================
+        // RENDER VEHICLES
+        // ============================================================
+        function renderVehicles() {
+            const search = document.getElementById('searchVehicle').value.toLowerCase();
+            const filtered = vehicleData.filter(row => {
+                const searchText = (row.Vehicle_No || '') + ' ' + (row.Vehicle_Type || '') + ' ' + (row.Vehicle_Model || '') +
+                    ' ' + (row.Company || '') + ' ' + (row.Driver_Name || '');
+                return searchText.toLowerCase().includes(search);
+            });
+
+            const tbody = document.getElementById('vehicleTableBody');
+
+            if (filtered.length === 0) {
+                tbody.innerHTML =
+                    `<tr><td colspan="8" style="text-align:center;padding:2rem;color:#5d7f92;">कुनै सवारी छैन</td></tr>`;
+                return;
+            }
+
+            let html = '';
+            filtered.forEach((row, idx) => {
+                const status = row.Status || 'सक्रिय';
+                const statusClass = status === 'सक्रिय' ? 'status-active' :
+                    status === 'निष्क्रिय' ? 'status-inactive' : 'status-maintenance';
+
+                html += `
+                    <tr>
+                        <td>${idx + 1}</td>
+                        <td><strong>${row.Vehicle_No || '-'}</strong></td>
+                        <td>${row.Vehicle_Type || '-'}</td>
+                        <td>${row.Vehicle_Model || '-'}</td>
+                        <td>${row.Company || '-'}</td>
+                        <td>${row.Driver_Name || '-'}</td>
+                        <td><span class="status-badge ${statusClass}">${status}</span></td>
+                        <td>
+                            <div class="action-btns">
+                                <button class="edit" onclick="editVehicle('${row.Vehicle_ID}')"><i class="fas fa-edit"></i></button>
+                                <button class="delete" onclick="deleteVehicle('${row.Vehicle_ID}')"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+            tbody.innerHTML = html;
+        }
+
+        // ============================================================
+        // DATE FORMAT HELPER
+        // ============================================================
+        function formatDateInput(e) {
+            let v = e.target.value.replace(/\D/g, '');
+            if (v.length >= 4) v = v.slice(0, 4) + '-' + v.slice(4);
+            if (v.length >= 7) v = v.slice(0, 7) + '-' + v.slice(7, 9);
+            e.target.value = v;
+        }
+
+        // ============================================================
+        // ADD DATE FORMAT LISTENERS
+        // ============================================================
+        document.getElementById('purchaseDate').addEventListener('input', formatDateInput);
+        document.getElementById('registrationDate').addEventListener('input', formatDateInput);
+        document.getElementById('insuranceExpiry').addEventListener('input', formatDateInput);
+        document.getElementById('bluebookExpiry').addEventListener('input', formatDateInput);
+
+        // ============================================================
+        // FORM SUBMIT - Handles both Create and Update
+        // ============================================================
+        document.getElementById('vehicleForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const vehicleNo = document.getElementById('vehicleNo').value.trim();
+            if (!vehicleNo) {
+                showToast('❌ कृपया सवारी नं. भर्नुहोस्', 'error');
+                document.getElementById('vehicleNo').focus();
+                return;
+            }
+
+            const btn = document.getElementById('submitBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> पठाउँदै...';
+
+            // Get form data as URLSearchParams
+            const formData = new FormData(this);
+            const params = new URLSearchParams();
+            
+            for (const [key, value] of formData.entries()) {
+                params.append(key, value);
+            }
+            
+            params.append('sheetName', 'Vehicles');
+            
+            const vehicleId = document.getElementById('editVehicleId').value;
+            const isUpdate = vehicleId && vehicleId !== '';
+            
+            if (isUpdate) {
+                params.append('_method', 'PUT');
+            }
+
+            fetch(SCRIPT_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: params.toString()
+            })
+            .then(r => r.json())
+            .then(d => {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-save"></i> सुरक्षित';
+                
+                if (d.result === 'success') {
+                    showToast(isUpdate ? '✅ सवारी अद्यावधिक गरियो' : '✅ सवारी थपियो', 'success');
+                    document.getElementById('vehicleForm').reset();
+                    document.getElementById('editVehicleId').value = '';
+                    document.getElementById('editFormBtn').style.display = 'none';
+                    document.getElementById('cancelEditBtn').style.display = 'none';
+                    document.getElementById('formTitle').innerHTML = '<i class="fas fa-plus-circle"></i> नयाँ सवारी थप्नुहोस्';
+                    document.getElementById('status').value = 'सक्रिय';
+                    isEditing = false;
+                    loadVehicles();
+                    loadDrivers();
+                } else {
+                    showToast('❌ ' + (d.error || 'असफल'), 'error');
+                }
+            })
+            .catch(err => {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-save"></i> सुरक्षित';
+                showToast('⚠️ सर्भर समस्या', 'error');
+                console.error(err);
+            });
+        });
+
+        // ============================================================
+        // EDIT VEHICLE - Load data into form
+        // ============================================================
+        function editVehicle(id) {
+            const row = vehicleData.find(r => r.Vehicle_ID == id);
+            if (!row) { showToast('सवारी फेला परेन', 'error'); return; }
+
+            isEditing = true;
+            document.getElementById('editVehicleId').value = row.Vehicle_ID;
+            document.getElementById('vehicleNo').value = row.Vehicle_No || '';
+            document.getElementById('vehicleType').value = row.Vehicle_Type || '';
+            document.getElementById('vehicleModel').value = row.Vehicle_Model || '';
+            document.getElementById('company').value = row.Company || '';
+            document.getElementById('engineNo').value = row.Engine_No || '';
+            document.getElementById('chassisNo').value = row.Chassis_No || '';
+            document.getElementById('fuelType').value = row.Fuel_Type || '';
+            document.getElementById('driverName').value = row.Driver_Name || '';
+            document.getElementById('purchaseDate').value = row.Purchase_Date || '';
+            document.getElementById('registrationDate').value = row.Registration_Date || '';
+            document.getElementById('registrationNo').value = row.Registration_No || '';
+            document.getElementById('insuranceExpiry').value = row.Insurance_Expiry || '';
+            document.getElementById('bluebookExpiry').value = row.Bluebook_Expiry || '';
+            document.getElementById('status').value = row.Status || 'सक्रिय';
+            document.getElementById('remarks').value = row.Remarks || '';
+
+            document.getElementById('formTitle').innerHTML = '<i class="fas fa-edit"></i> सवारी सम्पादन गर्नुहोस्';
+            document.getElementById('editFormBtn').style.display = 'inline-flex';
+            document.getElementById('cancelEditBtn').style.display = 'inline-flex';
+            document.getElementById('vehicleNo').focus();
+
+            // Scroll to form
+            document.querySelector('.form-section').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // ============================================================
+        // EDIT FORM BUTTON - Saves the edited data
+        // ============================================================
+        document.getElementById('editFormBtn').addEventListener('click', function() {
+            // Trigger the form submit
+            document.getElementById('vehicleForm').dispatchEvent(new Event('submit'));
+        });
+
+        // ============================================================
+        // DELETE VEHICLE
+        // ============================================================
+        function deleteVehicle(id) {
+            if (!confirm('के यो सवारी मेटाउने?')) return;
+
+            const params = new URLSearchParams();
+            params.append('sheetName', 'Vehicles');
+            params.append('Vehicle_ID', id);
+            params.append('_method', 'DELETE');
+
+            fetch(SCRIPT_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: params.toString()
+            })
+            .then(r => r.json())
+            .then(d => {
+                if (d.result === 'success') {
+                    showToast('✅ सवारी मेटियो', 'success');
+                    loadVehicles();
+                } else {
+                    showToast('❌ ' + (d.error || 'मेटाउन असफल'), 'error');
+                }
+            })
+            .catch(err => {
+                showToast('⚠️ सर्भर समस्या', 'error');
+                console.error(err);
+            });
+        }
+
+        // ============================================================
+        // RESET BUTTON
+        // ============================================================
+        document.getElementById('resetBtn').addEventListener('click', function() {
+            if (isEditing) {
+                if (!confirm('के तपाईं सम्पादन रद्द गरी फारम खाली गर्न चाहनुहुन्छ?')) return;
+            }
+            document.getElementById('vehicleForm').reset();
+            document.getElementById('editVehicleId').value = '';
+            document.getElementById('editFormBtn').style.display = 'none';
+            document.getElementById('cancelEditBtn').style.display = 'none';
+            document.getElementById('formTitle').innerHTML = '<i class="fas fa-plus-circle"></i> नयाँ सवारी थप्नुहोस्';
+            document.getElementById('status').value = 'सक्रिय';
+            isEditing = false;
+            showToast('फारम खाली गरियो', 'info');
+        });
+
+        // ============================================================
+        // CANCEL EDIT BUTTON
+        // ============================================================
+        document.getElementById('cancelEditBtn').addEventListener('click', function() {
+            document.getElementById('vehicleForm').reset();
+            document.getElementById('editVehicleId').value = '';
+            this.style.display = 'none';
+            document.getElementById('editFormBtn').style.display = 'none';
+            document.getElementById('formTitle').innerHTML = '<i class="fas fa-plus-circle"></i> नयाँ सवारी थप्नुहोस्';
+            document.getElementById('status').value = 'सक्रिय';
+            isEditing = false;
+            showToast('सम्पादन रद्द गरियो', 'info');
+        });
+
+        // ============================================================
+        // SEARCH & REFRESH
+        // ============================================================
+        document.getElementById('searchBtn').addEventListener('click', renderVehicles);
+        document.getElementById('refreshBtn').addEventListener('click', loadVehicles);
+        document.getElementById('searchVehicle').addEventListener('keyup', function(e) {
+            if (e.key === 'Enter') renderVehicles();
+        });
+
+        // ============================================================
+        // INIT
+        // ============================================================
+        loadVehicles();
+        loadDrivers();
+    </script>
+</body>
+</html>

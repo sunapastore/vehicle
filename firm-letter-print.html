@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="ne">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>कोटेशन पत्र · प्रिन्ट</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Kalimati', 'Noto Sans Devanagari', 'Nirmala UI', sans-serif;
+        }
+
+        body {
+            background: #e5e5e5;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .page {
+            width: 210mm;
+            min-height: 297mm;
+            background: #fff;
+            margin: auto;
+            padding: 16mm 20mm;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .header {
+            position: relative;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .logo {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 65px;
+        }
+
+        .logo img {
+            width: 100%;
+        }
+
+        .motto {
+            font-size: 14px;
+            margin-bottom: 3px;
+            color: #1a6f8f;
+        }
+
+        .office-name {
+            font-size: 28px;
+            font-weight: bold;
+            line-height: 1.3;
+            color: #0b2b3d;
+        }
+
+        .address {
+            position: absolute;
+            right: 0;
+            top: 50px;
+            text-align: right;
+            font-size: 15px;
+            line-height: 1.5;
+            color: #1a6f8f;
+        }
+
+        .ref-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-top: 35px;
+            margin-bottom: 25px;
+            font-size: 16px;
+        }
+
+        .left-ref {
+            line-height: 1.8;
+        }
+
+        .right-ref {
+            text-align: right;
+            line-height: 1.8;
+        }
+
+        .subject {
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            text-decoration: underline;
+            margin-bottom: 25px;
+            color: #0b2b3d;
+        }
+
+        .receiver {
+            font-size: 16px;
+            line-height: 1.8;
+            margin-bottom: 25px;
+        }
+
+        .content {
+            font-size: 16px;
+            line-height: 2.2;
+            text-align: justify;
+            text-indent: 40px;
+            margin-bottom: 25px;
+        }
+
+        .details-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 12px;
+            color: #0b2b3d;
+        }
+
+        .form-row {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 8px;
+            font-size: 15px;
+        }
+
+        .form-label {
+            width: 150px;
+            font-weight: 600;
+            color: #0b2b3d;
+            flex-shrink: 0;
+        }
+
+        .form-input {
+            flex: 1;
+            border: 1px solid #666;
+            min-height: 22px;
+            padding: 3px 6px;
+            border-radius: 4px;
+            background: #fafafa;
+            min-width: 150px;
+            max-width: 100%;
+        }
+
+        .form-input .value {
+            display: block;
+            min-height: 16px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            line-height: 1.4;
+            font-size: 13px;
+        }
+
+        .big-box {
+            min-height: 55px;
+        }
+
+        /* Top Bar - Screen only */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 3px solid #d0e2f0;
+        }
+
+        .top-bar h2 {
+            font-size: 1.2rem;
+            color: #0b2b3d;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .top-bar h2 i {
+            color: #1a6f8f;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            border: none;
+            padding: 0.5rem 1.2rem;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: 0.2s;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .btn-primary {
+            background: #1b6a89;
+            color: #fff;
+        }
+        .btn-primary:hover {
+            background: #0f5773;
+        }
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #b2ccdb;
+            color: #1f4960;
+        }
+        .btn-outline:hover {
+            background: #e2edf5;
+        }
+
+        .no-print {
+            display: block;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            color: #5d7f92;
+        }
+
+        .loading i {
+            font-size: 2.5rem;
+            display: block;
+            margin-bottom: 1rem;
+        }
+
+        .error-msg {
+            text-align: center;
+            padding: 3rem;
+            color: #a13d3d;
+        }
+
+        .error-msg i {
+            font-size: 2.5rem;
+            display: block;
+            margin-bottom: 1rem;
+        }
+
+        @media print {
+            body {
+                background: #fff !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+
+            .page {
+                width: 100%;
+                min-height: 100%;
+                padding: 14mm 18mm;
+                box-shadow: none !important;
+                margin: 0 !important;
+            }
+
+            .top-bar,
+            .btn-group,
+            .no-print {
+                display: none !important;
+            }
+
+            .logo img {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .form-input {
+                border-color: #000 !important;
+                background: #fff !important;
+            }
+
+            /* Keep all styles same as screen */
+            .motto {
+                font-size: 14px;
+            }
+            .office-name {
+                font-size: 28px;
+            }
+            .address {
+                font-size: 15px;
+            }
+            .ref-section {
+                font-size: 16px;
+            }
+            .subject {
+                font-size: 18px;
+            }
+            .receiver {
+                font-size: 16px;
+                line-height: 1.8;
+            }
+            .content {
+                font-size: 16px;
+            }
+            .details-title {
+                font-size: 18px;
+            }
+            .form-row {
+                font-size: 15px;
+            }
+            .form-label {
+                width: 150px;
+            }
+            .form-input {
+                min-height: 22px;
+                padding: 3px 6px;
+                min-width: 150px;
+            }
+            .form-input .value {
+                font-size: 13px;
+                min-height: 16px;
+                line-height: 1.4;
+            }
+            .big-box {
+                min-height: 55px;
+            }
+            .left-ref {
+                line-height: 1.8;
+            }
+            .right-ref {
+                line-height: 1.8;
+            }
+
+            /* Ensure proper page breaks */
+            .page {
+                page-break-after: avoid;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            .page {
+                width: 100%;
+                padding: 10mm 8mm;
+            }
+
+            .header {
+                position: static;
+                text-align: center;
+            }
+
+            .logo {
+                position: static;
+                margin: 0 auto 10px;
+                width: 50px;
+            }
+
+            .address {
+                position: static;
+                text-align: center;
+                margin-top: 10px;
+            }
+
+            .office-name {
+                font-size: 22px;
+            }
+
+            .form-row {
+                flex-direction: column;
+                gap: 5px;
+            }
+
+            .form-label {
+                width: 100%;
+            }
+
+            .form-input {
+                min-width: 100%;
+                max-width: 100%;
+            }
+
+            .ref-section {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .right-ref {
+                text-align: left;
+            }
+
+            .top-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .btn-group {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page" id="printPage">
+        <!-- Top Bar - Visible only on screen -->
+        <div class="top-bar no-print" id="topBar">
+            <h2><i class="fas fa-file-signature"></i> कोटेशन पत्र · पूर्वावलोकन</h2>
+            <div class="btn-group">
+                <button class="btn btn-primary" id="printBtn"><i class="fas fa-print"></i> प्रिन्ट गर्नुहोस्</button>
+                <button class="btn btn-outline" id="backBtn"><i class="fas fa-arrow-left"></i> फर्कनुहोस्</button>
+            </div>
+        </div>
+
+        <!-- Loading State -->
+        <div id="loadingState" class="loading">
+            <i class="fas fa-spinner fa-pulse"></i>
+            डाटा लोड हुँदै...
+        </div>
+
+        <!-- Error State -->
+        <div id="errorState" class="error-msg" style="display:none;">
+            <i class="fas fa-exclamation-circle"></i>
+            <span id="errorMessage">डाटा फेला परेन</span>
+        </div>
+
+        <!-- Letter Content -->
+        <div id="letterContent" style="display:none;">
+            <!-- HEADER -->
+            <div class="header">
+                <div class="logo">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Emblem_of_Nepal.svg/512px-Emblem_of_Nepal.svg.png" alt="Nepal Emblem">
+                </div>
+
+                <div class="motto">"पर्यटकीय नगरी"</div>
+
+                <div class="office-name">
+                    सूर्योदय नगरपालिका<br>
+                    नगर कार्यपालिकाको कार्यालय
+                </div>
+
+                <div class="address">
+                    फिक्कल, इलाम<br>
+                    कोशी प्रदेश, नेपाल ।
+                </div>
+            </div>
+
+            <!-- REF -->
+            <div class="ref-section">
+                <div class="left-ref">
+                    प.सं. : ०८३।८४<br>
+                    च.नं. : .........................
+                </div>
+                <div class="right-ref">
+                    मिति : <span id="displayLetterDate">.........................</span>
+                </div>
+            </div>
+
+            <!-- SUBJECT -->
+            <div class="subject">
+                विषय :- सवारी साधन मर्मतको लागि कोटेशन पेश गर्ने बारे ।
+            </div>
+
+            <!-- RECEIVER -->
+            <div class="receiver">
+                श्री <span id="displayFirmName">....................................</span><br>
+                <span id="displayFirmAddress">..........................................</span> ।
+            </div>
+
+            <!-- BODY -->
+            <div class="content">
+                प्रस्तुत विषयमा यस कार्यालयको नाममा दर्ता कायम रहेको
+                तपशिलमा उल्लेखित गाडी नियमित मर्मत तथा सर्भिसिङ्ग गर्न
+                आवश्यक भएकाले मर्मत गर्न लाग्ने आवश्यक रकम सहितको
+                स्पष्ट विवरण खुल्ने कोटेशन पेश गर्नुहुन जानकारीको लागि
+                अनुरोध छ ।
+            </div>
+
+            <!-- DETAILS -->
+            <div class="details-title">
+                तपशिल :-
+            </div>
+
+            <div class="form-row">
+                <div class="form-label">
+                    १. सवारी साधन नं. :
+                </div>
+                <div class="form-input">
+                    <span class="value" id="displayVehicleNo">.........................</span>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-label">
+                    २. मर्मत विवरण :
+                </div>
+                <div class="form-input big-box">
+                    <span class="value" id="displayRepairDetails">.........................</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================================
+        // CONFIGURATION
+        // ============================================================
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxlPhy_16N--T89myiSGwWlwXeC8Qrh8-5xRf6z7Gua8ATFtPMUpqlmHj7jCkKhi_6A/exec";
+
+        // ============================================================
+        // FORMAT DATE - Extracts only date part from ISO string
+        // ============================================================
+        function formatDate(dateStr) {
+            if (!dateStr) return '.........................';
+            
+            // If it contains 'T', extract only the date part (YYYY-MM-DD)
+            if (dateStr.includes('T')) {
+                return dateStr.split('T')[0];
+            }
+            
+            // If it's already in YYYY-MM-DD format, return as is
+            if (dateStr.match(/^\d{4}-\d{2}-\d{2}$/)) {
+                return dateStr;
+            }
+            
+            // Otherwise return as is
+            return dateStr;
+        }
+
+        // ============================================================
+        // GET DATA FROM URL PARAMS
+        // ============================================================
+        function getQueryParams() {
+            const params = new URLSearchParams(window.location.search);
+            const data = {};
+            for (const [key, value] of params) {
+                data[key] = value;
+            }
+            return data;
+        }
+
+        // ============================================================
+        // POPULATE LETTER
+        // ============================================================
+        function populateLetter(data) {
+            // Format date before displaying
+            const formattedDate = formatDate(data.Letter_Date);
+            
+            // प.सं. is now static ०८३।८४, so we don't need to set it from data
+            // document.getElementById('displayLetterNo').textContent = data.Letter_No || '.................';
+            document.getElementById('displayLetterDate').textContent = formattedDate || '.........................';
+            document.getElementById('displayFirmName').textContent = data.Firm_Name || '....................................';
+            document.getElementById('displayFirmAddress').textContent = data.Firm_Address || '..........................................';
+            document.getElementById('displayVehicleNo').textContent = data.Vehicle_No || '.........................';
+            document.getElementById('displayRepairDetails').textContent = data.Repair_Details || '.........................';
+
+            // Show content, hide loading
+            document.getElementById('loadingState').style.display = 'none';
+            document.getElementById('letterContent').style.display = 'block';
+
+            // Auto print after short delay
+            setTimeout(() => {
+                window.print();
+            }, 800);
+        }
+
+        // ============================================================
+        // LOAD DATA
+        // ============================================================
+        function loadData() {
+            // Try sessionStorage first
+            try {
+                const saved = sessionStorage.getItem('firmLetterPrintData');
+                if (saved) {
+                    const data = JSON.parse(saved);
+                    populateLetter(data);
+                    sessionStorage.removeItem('firmLetterPrintData');
+                    return;
+                }
+            } catch (e) {
+                // Ignore
+            }
+
+            // Try URL params
+            const params = getQueryParams();
+            if (params.Letter_No || params.Firm_Name) {
+                populateLetter(params);
+                return;
+            }
+
+            // Try to load from localStorage using Letter_No from URL
+            const letterNo = params.Letter_No;
+            if (letterNo) {
+                try {
+                    const saved = localStorage.getItem('firmletter_' + letterNo);
+                    if (saved) {
+                        const data = JSON.parse(saved);
+                        populateLetter(data);
+                        return;
+                    }
+                } catch (e) {
+                    // Ignore
+                }
+            }
+
+            // Try to fetch from Google Sheets
+            fetch(`${SCRIPT_URL}?action=firmLetters`)
+                .then(r => r.json())
+                .then(data => {
+                    const rows = Array.isArray(data) ? data : [];
+                    let found = null;
+
+                    // Try to find by Letter_No
+                    if (letterNo) {
+                        found = rows.find(r => r.Letter_No === letterNo);
+                    }
+
+                    // If not found, get the most recent
+                    if (!found && rows.length > 0) {
+                        found = rows[rows.length - 1];
+                    }
+
+                    if (found) {
+                        populateLetter(found);
+                    } else {
+                        document.getElementById('loadingState').innerHTML = `
+                            <i class="fas fa-exclamation-circle" style="color:#a13d3d;"></i>
+                            कुनै डाटा फेला परेन
+                        `;
+                    }
+                })
+                .catch(err => {
+                    console.error('Load error:', err);
+                    document.getElementById('loadingState').innerHTML = `
+                        <i class="fas fa-exclamation-circle" style="color:#a13d3d;"></i>
+                        डाटा लोड गर्न असफल
+                        <br><small>${err.message}</small>
+                    `;
+                });
+        }
+
+        // ============================================================
+        // PRINT BUTTON
+        // ============================================================
+        document.getElementById('printBtn').addEventListener('click', function() {
+            window.print();
+        });
+
+        // ============================================================
+        // BACK BUTTON
+        // ============================================================
+        document.getElementById('backBtn').addEventListener('click', function() {
+            window.close();
+            // If window.close() doesn't work, go back
+            if (window.history.length > 1) {
+                window.history.back();
+            }
+        });
+
+        // ============================================================
+        // INIT
+        // ============================================================
+        loadData();
+    </script>
+</body>
+</html>

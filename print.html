@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="ne">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>मर्मत आवेदन प्रिन्ट</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Kalimati', 'Noto Sans Devanagari', 'Nirmala UI', sans-serif;
+        }
+
+        body {
+            background: #eee;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .print-page {
+            width: 210mm;
+            min-height: 297mm;
+            background: #fff;
+            padding: 15mm 12mm;
+            margin: auto;
+            color: #000;
+            font-size: 14px;
+            line-height: 1.6;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .print-center {
+            text-align: center;
+        }
+
+        .print-small {
+            font-size: 13px;
+        }
+
+        .print-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 5px;
+            letter-spacing: 1px;
+        }
+
+        .print-subtitle {
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 8px;
+            letter-spacing: 1px;
+        }
+
+        .print-row {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .print-col {
+            width: 48%;
+        }
+
+        .print-section-title {
+            margin-top: 25px;
+            margin-bottom: 8px;
+            font-weight: bold;
+            font-size: 15px;
+        }
+
+        .print-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 8px;
+            font-size: 13px;
+        }
+
+        .print-table,
+        .print-table th,
+        .print-table td {
+            border: 1px solid #000;
+        }
+
+        .print-table th {
+            background: #f0f0f0;
+            font-weight: 600;
+            text-align: center;
+            padding: 6px 8px;
+        }
+
+        .print-table td {
+            padding: 6px 8px;
+            vertical-align: top;
+        }
+
+        .print-note-box {
+            border: 1px solid #000;
+            margin-top: 30px;
+            padding: 12px 14px;
+            min-height: 200px;
+        }
+
+        .print-note-box p {
+            margin-bottom: 10px;
+            line-height: 1.8;
+        }
+
+        .print-signature {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+        }
+
+        .print-signature-box {
+            width: 30%;
+        }
+
+        .print-signature-box p {
+            line-height: 1.8;
+            font-size: 13px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            color: #5d7f92;
+        }
+
+        .loading i {
+            font-size: 2rem;
+            display: block;
+            margin-bottom: 1rem;
+        }
+
+        .error-msg {
+            text-align: center;
+            padding: 3rem;
+            color: #a13d3d;
+        }
+
+        .error-msg i {
+            font-size: 2rem;
+            display: block;
+            margin-bottom: 1rem;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 3px solid #d0e2f0;
+        }
+
+        .top-bar h2 {
+            font-size: 1.2rem;
+            color: #0b2b3d;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .top-bar h2 i {
+            color: #1a6f8f;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            border: none;
+            padding: 0.5rem 1.2rem;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: 0.2s;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .btn-primary {
+            background: #1b6a89;
+            color: #fff;
+        }
+        .btn-primary:hover {
+            background: #0f5773;
+        }
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #b2ccdb;
+            color: #1f4960;
+        }
+        .btn-outline:hover {
+            background: #e2edf5;
+        }
+
+        .no-print {
+            display: block;
+        }
+
+        @media print {
+            body {
+                background: #fff !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+
+            .print-page {
+                width: 100%;
+                min-height: 100%;
+                padding: 15mm 12mm;
+                box-shadow: none !important;
+                margin: 0 !important;
+            }
+
+            .top-bar,
+            .btn-group,
+            .no-print {
+                display: none !important;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .print-page {
+                width: 100%;
+                padding: 10mm 8mm;
+            }
+            .print-row {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            .print-col {
+                width: 100%;
+            }
+            .print-signature {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+            .print-signature-box {
+                width: 100%;
+            }
+            .top-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .btn-group {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="print-page" id="printPage">
+        <!-- Top Bar -->
+        <div class="top-bar no-print" id="topBar">
+            <h2><i class="fas fa-file-alt"></i> मर्मत आवेदन · पूर्वावलोकन</h2>
+            <div class="btn-group">
+                <button class="btn btn-primary" id="printBtn"><i class="fas fa-print"></i> प्रिन्ट गर्नुहोस्</button>
+                <button class="btn btn-outline" id="backBtn"><i class="fas fa-arrow-left"></i> फर्कनुहोस्</button>
+            </div>
+        </div>
+
+        <!-- Loading State -->
+        <div id="loadingContent" class="loading">
+            <i class="fas fa-spinner fa-pulse"></i>
+            डाटा लोड हुँदै...
+        </div>
+
+        <!-- Error State -->
+        <div id="errorContent" class="error-msg" style="display:none;">
+            <i class="fas fa-exclamation-circle"></i>
+            <span id="errorMessage">डाटा फेला परेन</span>
+        </div>
+
+        <!-- Print Content -->
+        <div id="printContent" style="display:none;">
+            <!-- Header -->
+            <div class="print-center">
+                <div class="print-small">सूर्योदय नगरपालिका</div>
+                <div class="print-title">नगर कार्यपालिकाको कार्यालय</div>
+                <div class="print-small" style="margin-top:8px;">
+                    कार्यालय कोड नं. ........................
+                </div>
+                <div class="print-subtitle">
+                    मर्मत, सम्भार तथा संरक्षण आवेदन फाराम
+                </div>
+                <div style="margin-top:20px;">
+                    आर्थिक वर्ष : ०८३।८४
+                </div>
+            </div>
+
+            <!-- Row -->
+            <div class="print-row">
+                <div class="print-col">
+                    सामानको नाम : <span id="pItemName">...............................................</span><br>
+                    सामानको पहिचान नं. : <span id="pItemId">............................</span>
+                </div>
+                <div class="print-col" style="text-align:right;">
+                    मर्मत आवेदन फाराम नं.- <span id="pAppNo">.................</span><br>
+                    मिति: <span id="pEntryDate">..........................</span>
+                </div>
+            </div>
+
+            <!-- Table 1 -->
+            <div class="print-section-title">
+                मर्मत आवेदनकर्ताले भर्ने:
+            </div>
+
+            <table class="print-table">
+                <thead>
+                    <tr>
+                        <th style="width:8%;">क्र.सं.</th>
+                        <th style="width:22%;">सामानको विवरण</th>
+                        <th style="width:15%;">अनुमानित मर्मत लागत</th>
+                        <th style="width:25%;">मर्मत गर्नुपर्ने कारण</th>
+                        <th style="width:15%;">मर्मत आवेदनकर्ताको नाम</th>
+                        <th style="width:15%;">कैफियत</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="text-align:center;">१.</td>
+                        <td id="pItemDesc">-</td>
+                        <td id="pEstimatedCost">-</td>
+                        <td id="pReason">-</td>
+                        <td id="pApplicant">-</td>
+                        <td id="pRemarks">-</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- Table 2 -->
+            <div class="print-section-title" style="margin-top:25px;">
+                स्टोरकिपर/फाँटवालाले भर्ने:
+            </div>
+
+            <table class="print-table">
+                <thead>
+                    <tr>
+                        <th style="width:20%;">जिन्सी संकेत नं</th>
+                        <th style="width:20%;">वारेन्टी अवधि भए/नभएको</th>
+                        <th style="width:20%;">अगाडि मर्मत गरिएको पटक:</th>
+                        <th style="width:20%;">यस अघि मर्मत गरिएको मिति:</th>
+                        <th style="width:20%;">अगाडि मर्मत गरिएको रकम:</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td id="pItemCode">-</td>
+                        <td id="pWarranty">-</td>
+                        <td id="pPrevCount">-</td>
+                        <td id="pPrevDate">-</td>
+                        <td id="pPrevCost">-</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- Note Box -->
+            <div class="print-note-box">
+                <p>श्री <span id="pOrderedTo"></span></p>
+                <p>
+                    <b>मर्मत आदेश दिइएको व्यक्ति/निकायको नाम : </b> <span id="pFirmName"></span>
+                </p>
+                <p>
+                    ठेगाना : <span id="pAddress"></span>
+                </p>
+                <p>
+                    संस्था दर्ता नं: <span id="pRegNo"></span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    प्यान नं. <span id="pPan"></span>
+                </p>
+                <p style="margin-top:20px;">
+                    माथि उल्लेखित सामानको मर्मत गरी मिति ............ भित्र
+                    <span id="pOfficeName2">..............</span> कार्यालय <span id="pLocation">...........</span> स्थान बिल/इन्भोइस सहित
+                    बुझाउनुहोला ।
+                </p>
+
+                <!-- Signatures -->
+                <div class="print-signature">
+                    <div class="print-signature-box">
+                        <p><b>सिफारिस गर्ने शाखा प्रमुखको सही:</b></p>
+                        <p>
+                            नाम: <span id="pSignDeptHeadName"></span><br>
+                            दर्जा: <span id="pSignDeptHeadRank"></span><br>
+                            मिति: <span id="pSignDeptHeadDate"></span>
+                        </p>
+                    </div>
+
+                    <div class="print-signature-box">
+                        <p><b>सिफारिस गर्ने प्राविधिकको सही:</b></p>
+                        <p>
+                            नाम: <span id="pSignTechName"></span><br>
+                            दर्जा: <span id="pSignTechRank"></span><br>
+                            मिति: <span id="pSignTechDate"></span>
+                        </p>
+                    </div>
+
+                    <div class="print-signature-box">
+                        <p><b>स्वीकृत गर्ने कार्यालय प्रमुखको सही:</b></p>
+                        <p>
+                            नाम: <span id="pSignChiefName"></span><br>
+                            दर्जा: <span id="pSignChiefRank"></span><br>
+                            मिति: <span id="pSignChiefDate"></span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================================
+        // CONFIGURATION
+        // ============================================================
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxlPhy_16N--T89myiSGwWlwXeC8Qrh8-5xRf6z7Gua8ATFtPMUpqlmHj7jCkKhi_6A/exec";
+
+        // ============================================================
+        // GET QUERY PARAM
+        // ============================================================
+        function getQueryParam(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+
+        // ============================================================
+        // FORMAT DATE - FIXED: Properly handles ISO date strings
+        // ============================================================
+        function formatDate(dateStr) {
+            if (!dateStr) return '.........................';
+            
+            // If it contains 'T', extract only the date part (YYYY-MM-DD)
+            if (dateStr.includes('T')) {
+                return dateStr.split('T')[0];
+            }
+            
+            // If it's already in YYYY-MM-DD format, return as is
+            if (dateStr.match(/^\d{4}-\d{2}-\d{2}$/)) {
+                return dateStr;
+            }
+            
+            // Otherwise return as is
+            return dateStr;
+        }
+
+        // ============================================================
+        // LOAD FIRMS DATA
+        // ============================================================
+        function loadFirmData(firmName) {
+            if (!firmName) return;
+            
+            fetch(`${SCRIPT_URL}?action=firms`)
+                .then(r => r.json())
+                .then(data => {
+                    const firms = Array.isArray(data) ? data : [];
+                    const firm = firms.find(f => f.Firm_Name === firmName);
+                    if (firm) {
+                        document.getElementById('pAddress').textContent = firm.Address || '';
+                        document.getElementById('pRegNo').textContent = firm.Registration_No || '';
+                        document.getElementById('pPan').textContent = firm.PAN_VAT_No || '';
+                    }
+                })
+                .catch(err => console.error('Error loading firm data:', err));
+        }
+
+        // ============================================================
+        // POPULATE PRINT
+        // ============================================================
+        function populatePrint(data) {
+            // Log the data to see what's coming
+            console.log('Populating print with data:', data);
+            
+            // Set static values
+            document.getElementById('pAppNo').textContent = data.Application_No || '.................';
+            
+            // FIXED: Format both Entry_Date and Previous_Repair_Date
+            document.getElementById('pEntryDate').textContent = formatDate(data.Entry_Date) || '..........................';
+            
+            // सामानको नाम - Use Item_Name
+            document.getElementById('pItemName').textContent = data.Item_Name || '...............................................';
+            
+            // सामानको पहिचान नं. - Use Vehicle_No (this will also go to जिन्सी संकेत नं)
+            const vehicleNo = data.Vehicle_No || '............................';
+            document.getElementById('pItemId').textContent = vehicleNo;
+            document.getElementById('pItemCode').textContent = vehicleNo; // Same value for जिन्सी संकेत नं
+
+            // Table 1 - सामानको विवरण (Vehicle No + Type + Model)
+            const itemDesc = (data.Vehicle_No || '') + (data.Vehicle_Type ? ' (' + data.Vehicle_Type + ')' : '') +
+                (data.Vehicle_Model ? ' ' + data.Vehicle_Model : '');
+            document.getElementById('pItemDesc').textContent = itemDesc || '-';
+            document.getElementById('pEstimatedCost').textContent = data.Estimated_Repair_Cost ? 'रु. ' + data.Estimated_Repair_Cost : '-';
+            document.getElementById('pReason').textContent = data.Repair_Reason || '-';
+            
+            // मर्मत आवेदनकर्ताको नाम - Use Applicant_Name only (no position)
+            document.getElementById('pApplicant').textContent = data.Applicant_Name || '-';
+            document.getElementById('pRemarks').textContent = data.Remarks || '-';
+
+            // Table 2 - Previous repair details
+            document.getElementById('pWarranty').textContent = '---';
+            document.getElementById('pPrevCount').textContent = data.Previous_Repair_Count || '-';
+            
+            // FIXED: Format Previous_Repair_Date to show only date part
+            const prevDate = data.Previous_Repair_Date || '';
+            console.log('Previous_Repair_Date raw:', prevDate);
+            document.getElementById('pPrevDate').textContent = formatDate(prevDate);
+            
+            // Previous Repair Cost - Use the value from data
+            console.log('Previous_Repair_Cost from data:', data.Previous_Repair_Cost);
+            
+            if (data.Previous_Repair_Cost && data.Previous_Repair_Cost !== '' && data.Previous_Repair_Cost !== 0) {
+                document.getElementById('pPrevCost').textContent = 'रु. ' + data.Previous_Repair_Cost;
+            } else {
+                document.getElementById('pPrevCost').textContent = '-';
+            }
+
+            // Note Box - Firm details
+            document.getElementById('pOrderedTo').textContent = data.Ordered_By || '';
+            const firmName = data.Workshop_Firm || '';
+            document.getElementById('pFirmName').textContent = firmName;
+            
+            // Load firm details from Firms sheet
+            if (firmName) {
+                loadFirmData(firmName);
+            }
+
+            // Office name (static)
+            document.getElementById('pOfficeName2').textContent = '..............';
+            document.getElementById('pLocation').textContent = '...........';
+
+            // Show content, hide loading
+            document.getElementById('loadingContent').style.display = 'none';
+            document.getElementById('printContent').style.display = 'block';
+
+            // Auto print after short delay
+            setTimeout(() => {
+                window.print();
+            }, 800);
+        }
+
+        // ============================================================
+        // LOAD DATA
+        // ============================================================
+        function loadData() {
+            const appNo = getQueryParam('appNo');
+            
+            if (!appNo) {
+                document.getElementById('loadingContent').style.display = 'none';
+                document.getElementById('errorContent').style.display = 'block';
+                document.getElementById('errorMessage').textContent = 'निवेदन नं. फेला परेन। कृपया ?appNo=MR-2025-0001 प्रयोग गर्नुहोस्।';
+                return;
+            }
+
+            // Try to get data from sessionStorage first (from new-entry page)
+            try {
+                const savedData = sessionStorage.getItem('printData');
+                if (savedData) {
+                    const data = JSON.parse(savedData);
+                    if (data.Application_No === appNo || data.Application_No) {
+                        populatePrint(data);
+                        sessionStorage.removeItem('printData');
+                        return;
+                    }
+                }
+            } catch (e) {
+                console.log('Session storage check failed:', e);
+            }
+
+            // Try to get data from repairs API
+            fetch(`${SCRIPT_URL}?action=repairs`)
+                .then(r => {
+                    if (!r.ok) throw new Error('Network response was not ok');
+                    return r.json();
+                })
+                .then(data => {
+                    const rows = Array.isArray(data) ? data : [];
+                    console.log('Repairs data loaded:', rows.length, 'records');
+                    
+                    // Try to find by Application_No
+                    let row = rows.find(r => r.Application_No === appNo);
+                    
+                    // If not found, try to find by ID (if appNo is numeric)
+                    if (!row && !isNaN(appNo)) {
+                        row = rows.find(r => String(r.ID) === String(appNo));
+                    }
+                    
+                    // If still not found, get the most recent record
+                    if (!row && rows.length > 0) {
+                        row = rows[rows.length - 1];
+                        console.log('Using most recent record:', row.Application_No);
+                    }
+                    
+                    if (row) {
+                        populatePrint(row);
+                    } else {
+                        document.getElementById('loadingContent').style.display = 'none';
+                        document.getElementById('errorContent').style.display = 'block';
+                        document.getElementById('errorMessage').textContent = 'रेकर्ड फेला परेन: ' + appNo + 
+                            '\nकृपया सही निवेदन नं. प्रयोग गर्नुहोस्।';
+                    }
+                })
+                .catch(err => {
+                    console.error('Load error:', err);
+                    document.getElementById('loadingContent').style.display = 'none';
+                    document.getElementById('errorContent').style.display = 'block';
+                    document.getElementById('errorMessage').textContent = 'डाटा लोड गर्न असफल: ' + err.message;
+                });
+        }
+
+        // ============================================================
+        // PRINT BUTTON
+        // ============================================================
+        document.getElementById('printBtn').addEventListener('click', function() {
+            window.print();
+        });
+
+        // ============================================================
+        // BACK BUTTON
+        // ============================================================
+        document.getElementById('backBtn').addEventListener('click', function() {
+            window.close();
+            if (window.history.length > 1) {
+                window.history.back();
+            }
+        });
+
+        // ============================================================
+        // INIT
+        // ============================================================
+        loadData();
+    </script>
+</body>
+</html>

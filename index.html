@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="ne">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>सवारी साधन मर्मत व्यवस्थापन · ड्यासबोर्ड</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Nirmala UI', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #e8f0f5 0%, #d4e0e8 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .dashboard {
+            max-width: 1200px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 32px;
+            box-shadow: 0 20px 60px -15px rgba(0, 20, 30, 0.3);
+            padding: 2.5rem 3rem;
+            transition: 0.3s;
+        }
+
+        .header {
+            text-align: center;
+            padding-bottom: 1.8rem;
+            border-bottom: 4px solid #d0e2f0;
+            margin-bottom: 2.5rem;
+            position: relative;
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: #1a6f8f;
+            border-radius: 4px;
+        }
+
+        .header .logo {
+            font-size: 3rem;
+            color: #1a6f8f;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #0b2b3d;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .header h1 i {
+            color: #1a6f8f;
+        }
+
+        .header .subtitle {
+            color: #2c5a73;
+            margin-top: 6px;
+            font-size: 1.05rem;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        .header .office-name {
+            color: #4a7a94;
+            font-size: 0.9rem;
+            margin-top: 4px;
+            font-weight: 400;
+        }
+
+        /* Stats Section */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .stat-card {
+            background: #f8fafc;
+            border-radius: 16px;
+            padding: 1.2rem 1rem;
+            text-align: center;
+            border: 1px solid #e8f0f5;
+            transition: 0.2s;
+        }
+
+        .stat-card:hover {
+            border-color: #1a6f8f;
+            background: #f0f7fc;
+        }
+
+        .stat-card .number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1a6f8f;
+            display: block;
+        }
+
+        .stat-card .label {
+            font-size: 0.8rem;
+            color: #5d7f92;
+            font-weight: 500;
+            margin-top: 4px;
+        }
+
+        .stat-card .icon {
+            font-size: 1.5rem;
+            color: #b5d4e3;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        /* Menu Grid */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .menu-card {
+            background: #f8fafc;
+            border-radius: 20px;
+            padding: 1.8rem 1.5rem;
+            text-align: center;
+            text-decoration: none;
+            color: #0b2b3d;
+            border: 2px solid transparent;
+            transition: all 0.25s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .menu-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: #1a6f8f;
+            opacity: 0;
+            transition: 0.3s;
+        }
+
+        .menu-card:hover {
+            border-color: #1a6f8f;
+            background: #f0f7fc;
+            transform: translateY(-6px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        .menu-card:hover::before {
+            opacity: 1;
+        }
+
+        .menu-card i {
+            font-size: 2.6rem;
+            color: #1a6f8f;
+            transition: 0.3s;
+        }
+
+        .menu-card:hover i {
+            transform: scale(1.1);
+        }
+
+        .menu-card h3 {
+            font-size: 1.05rem;
+            font-weight: 600;
+        }
+
+        .menu-card .desc {
+            font-size: 0.8rem;
+            color: #5d7f92;
+            line-height: 1.4;
+        }
+
+        .menu-card .badge {
+            background: #d9e9f2;
+            padding: 0.15rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.65rem;
+            color: #004466;
+            font-weight: 600;
+            margin-top: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Primary Card (New Entry) */
+        .menu-card.primary {
+            background: linear-gradient(135deg, #1b6a89, #0f5773);
+            color: white;
+            border-color: #1b6a89;
+        }
+
+        .menu-card.primary::before {
+            background: #fff;
+        }
+
+        .menu-card.primary i {
+            color: white;
+        }
+
+        .menu-card.primary .desc {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .menu-card.primary .badge {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .menu-card.primary:hover {
+            background: linear-gradient(135deg, #0f5773, #0a4055);
+            border-color: #0a4055;
+        }
+
+        /* Footer */
+        .footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            padding-top: 1.5rem;
+            border-top: 2px dashed #dce8f0;
+            color: #5d7f92;
+            font-size: 0.85rem;
+        }
+
+        .footer .version {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .footer .version i {
+            color: #1a6f8f;
+        }
+
+        .footer .status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .footer .status .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #28a745;
+            display: inline-block;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.4; }
+            100% { opacity: 1; }
+        }
+
+        .footer .status .dot.warning {
+            background: #ffc107;
+        }
+
+        /* Toast notification */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #0d3144;
+            color: white;
+            padding: 0.7rem 2rem;
+            border-radius: 60px;
+            font-weight: 500;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+            z-index: 999;
+            opacity: 0;
+            transition: 0.25s;
+            pointer-events: none;
+            font-size: 0.9rem;
+        }
+
+        .toast.show {
+            opacity: 1;
+        }
+
+        .toast.success {
+            background: #1b7a56;
+        }
+
+        .toast.error {
+            background: #a13d3d;
+        }
+
+        .toast.info {
+            background: #0d6efd;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .dashboard {
+                padding: 1.5rem;
+            }
+
+            .header h1 {
+                font-size: 1.6rem;
+            }
+
+            .header .logo {
+                font-size: 2.2rem;
+            }
+
+            .menu-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 1rem;
+            }
+
+            .menu-card {
+                padding: 1.2rem 1rem;
+            }
+
+            .menu-card i {
+                font-size: 2rem;
+            }
+
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 1rem;
+            }
+
+            .dashboard {
+                padding: 1rem;
+                border-radius: 20px;
+            }
+
+            .menu-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 1.3rem;
+            }
+
+            .stats {
+                grid-template-columns: 1fr 1fr;
+                gap: 0.6rem;
+            }
+
+            .stat-card .number {
+                font-size: 1.5rem;
+            }
+
+            .footer {
+                flex-direction: column;
+                text-align: center;
+                gap: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Header -->
+        <div class="header">
+            <span class="logo"><i class="fas fa-tools"></i></span>
+            <h1>
+                <i class="fas fa-vehicle"></i>
+                सवारी साधन मर्मत
+                <span style="font-size:0.6em;color:#2c5a73;font-weight:400;">व्यवस्थापन</span>
+            </h1>
+            <div class="subtitle">🏛️ नगरपालिका · मर्मत आवेदन प्रणाली</div>
+            <div class="office-name"><i class="fas fa-map-marker-alt"></i> नेपाल सरकार · स्थानीय तह</div>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats" id="statsContainer">
+            <div class="stat-card">
+                <span class="icon"><i class="fas fa-file-alt"></i></span>
+                <span class="number" id="totalRepairs">...</span>
+                <span class="label">कुल मर्मत</span>
+            </div>
+            <div class="stat-card">
+                <span class="icon"><i class="fas fa-clock"></i></span>
+                <span class="number" id="pendingRepairs">...</span>
+                <span class="label">पेन्डिङ</span>
+            </div>
+            <div class="stat-card">
+                <span class="icon"><i class="fas fa-check-circle"></i></span>
+                <span class="number" id="completedRepairs">...</span>
+                <span class="label">सम्पन्न</span>
+            </div>
+            <div class="stat-card">
+                <span class="icon"><i class="fas fa-building"></i></span>
+                <span class="number" id="totalFirms">...</span>
+                <span class="label">कुल फर्म</span>
+            </div>
+            <div class="stat-card">
+                <span class="icon"><i class="fas fa-users"></i></span>
+                <span class="number" id="totalDrivers">...</span>
+                <span class="label">कुल चालक</span>
+            </div>
+        </div>
+
+        <!-- Menu -->
+        <div class="menu-grid">
+            <!-- Repair Entry -->
+            <a href="new-entry.html" class="menu-card primary">
+                <i class="fas fa-plus-circle"></i>
+                <h3>नयाँ मर्मत आदेश</h3>
+                <span class="desc">नयाँ मर्मत आवेदन थप्नुहोस्</span>
+                <span class="badge">स्वतः नं.</span>
+            </a>
+
+            <!-- View List -->
+            <a href="view-list.html" class="menu-card">
+                <i class="fas fa-list-ul"></i>
+                <h3>मर्मत सूची</h3>
+                <span class="desc">सबै रेकर्ड हेर्नुहोस्</span>
+                <span class="badge">खोज · फिल्टर</span>
+            </a>
+
+            <!-- Application Letter Entry -->
+            <a href="application-entry.html" class="menu-card">
+                <i class="fas fa-file-alt"></i>
+                <h3>मर्मत निवेदन</h3>
+                <span class="desc">निवेदन पत्र तयार गर्नुहोस्</span>
+                <span class="badge">पत्र</span>
+            </a>
+
+            <!-- Application Letter Print -->
+            <a href="application-print.html" class="menu-card">
+                <i class="fas fa-print"></i>
+                <h3>निवेदन प्रिन्ट</h3>
+                <span class="desc">निवेदन पत्र प्रिन्ट गर्नुहोस्</span>
+                <span class="badge">सरकारी ढाँचा</span>
+            </a>
+
+            <!-- Quotation Letter -->
+            <a href="firm-letter.html" class="menu-card">
+                <i class="fas fa-file-signature"></i>
+                <h3>कोटेशन पत्र</h3>
+                <span class="desc">फर्मलाई कोटेशन पत्र</span>
+                <span class="badge">मर्मत</span>
+            </a>
+
+            <!-- Quotation Letter Print -->
+            <a href="firm-letter-print.html" class="menu-card">
+                <i class="fas fa-print"></i>
+                <h3>कोटेशन प्रिन्ट</h3>
+                <span class="desc">कोटेशन पत्र प्रिन्ट</span>
+                <span class="badge">प्रिन्ट</span>
+            </a>
+
+            <!-- Vehicles -->
+            <a href="vehicle.html" class="menu-card">
+                <i class="fas fa-truck"></i>
+                <h3>सवारी व्यवस्थापन</h3>
+                <span class="desc">सवारी थप्नुहोस् / सम्पादन</span>
+                <span class="badge">सवारी विवरण</span>
+            </a>
+
+            <!-- Drivers -->
+            <a href="drivers.html" class="menu-card">
+                <i class="fas fa-users"></i>
+                <h3>चालक व्यवस्थापन</h3>
+                <span class="desc">चालक थप्नुहोस् / सम्पादन</span>
+                <span class="badge">चालक विवरण</span>
+            </a>
+
+            <!-- Firms -->
+            <a href="firms.html" class="menu-card">
+                <i class="fas fa-building"></i>
+                <h3>फर्म व्यवस्थापन</h3>
+                <span class="desc">फर्म थप्नुहोस् / सम्पादन</span>
+                <span class="badge">मर्मत फर्म</span>
+            </a>
+
+            <!-- Print Repair Application -->
+            <a href="print.html" class="menu-card">
+                <i class="fas fa-print"></i>
+                <h3>मर्मत आदेश प्रिन्ट</h3>
+                <span class="desc">मर्मत आवेदन प्रिन्ट</span>
+                <span class="badge">सरकारी ढाँचा</span>
+            </a>
+
+            <!-- Refresh -->
+            <a href="#" class="menu-card" id="refreshBtn" style="cursor:pointer;">
+                <i class="fas fa-sync-alt"></i>
+                <h3>रिफ्रेस</h3>
+                <span class="desc">डाटा पुन: लोड गर्नुहोस्</span>
+                <span class="badge">अद्यावधिक</span>
+            </a>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <div class="version">
+                <i class="fas fa-database"></i>
+                <span>Google Sheets मा सुरक्षित</span>
+            </div>
+            <div class="status">
+                <span class="dot" id="statusDot"></span>
+                <span id="statusText">जडान भयो</span>
+                <span style="margin-left:0.5rem;color:#b5d4e3;">|</span>
+                <span id="currentTime" style="font-weight:400;"></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div id="toast" class="toast"></div>
+
+    <script>
+        // ============================================================
+        // CONFIGURATION
+        // ============================================================
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxlPhy_16N--T89myiSGwWlwXeC8Qrh8-5xRf6z7Gua8ATFtPMUpqlmHj7jCkKhi_6A/exec";
+
+        const toast = document.getElementById('toast');
+
+        // ============================================================
+        // TOAST
+        // ============================================================
+        function showToast(msg, type = 'success') {
+            toast.textContent = msg;
+            toast.className = 'toast show ' + type;
+            clearTimeout(toast._hideTimer);
+            toast._hideTimer = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3500);
+        }
+
+        // ============================================================
+        // UPDATE STATS
+        // ============================================================
+        function updateStats() {
+            // Update time
+            const now = new Date();
+            document.getElementById('currentTime').textContent =
+                now.toLocaleDateString('ne-NP', { year: 'numeric', month: 'short', day: 'numeric' }) +
+                ' ' + now.toLocaleTimeString('ne-NP', { hour: '2-digit', minute: '2-digit' });
+
+            // Fetch repair stats
+            fetch(`${SCRIPT_URL}?action=repairs`)
+                .then(r => r.json())
+                .then(data => {
+                    const repairs = Array.isArray(data) ? data : [];
+                    const total = repairs.length;
+                    const pending = repairs.filter(r => r.Status === 'पेन्डिङ' || !r.Status).length;
+                    const completed = repairs.filter(r => r.Status === 'सम्पन्न').length;
+
+                    document.getElementById('totalRepairs').textContent = total;
+                    document.getElementById('pendingRepairs').textContent = pending;
+                    document.getElementById('completedRepairs').textContent = completed;
+
+                    // Update status dot
+                    const dot = document.getElementById('statusDot');
+                    dot.className = 'dot';
+                    document.getElementById('statusText').textContent = '✅ जडान भयो';
+                })
+                .catch(err => {
+                    console.error('Stats error:', err);
+                    document.getElementById('totalRepairs').textContent = '?';
+                    document.getElementById('pendingRepairs').textContent = '?';
+                    document.getElementById('completedRepairs').textContent = '?';
+                    const dot = document.getElementById('statusDot');
+                    dot.className = 'dot warning';
+                    document.getElementById('statusText').textContent = '⚠️ जडान समस्या';
+                });
+
+            // Fetch firms count
+            fetch(`${SCRIPT_URL}?action=firms`)
+                .then(r => r.json())
+                .then(data => {
+                    const firms = Array.isArray(data) ? data : [];
+                    document.getElementById('totalFirms').textContent = firms.length;
+                })
+                .catch(() => {
+                    document.getElementById('totalFirms').textContent = '?';
+                });
+
+            // Fetch drivers count
+            fetch(`${SCRIPT_URL}?action=drivers`)
+                .then(r => r.json())
+                .then(data => {
+                    const drivers = Array.isArray(data) ? data : [];
+                    document.getElementById('totalDrivers').textContent = drivers.length;
+                })
+                .catch(() => {
+                    document.getElementById('totalDrivers').textContent = '?';
+                });
+        }
+
+        // ============================================================
+        // REFRESH BUTTON
+        // ============================================================
+        document.getElementById('refreshBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            showToast('🔄 डाटा पुन: लोड हुँदै...', 'info');
+            updateStats();
+            setTimeout(() => {
+                showToast('✅ डाटा अद्यावधिक गरियो', 'success');
+            }, 800);
+        });
+
+        // ============================================================
+        // AUTO REFRESH EVERY 60 SECONDS
+        // ============================================================
+        setInterval(updateStats, 60000);
+
+        // ============================================================
+        // INIT
+        // ============================================================
+        updateStats();
+
+        // Check if all menu items exist
+        console.log('Dashboard loaded successfully!');
+        console.log('Total menu items:', document.querySelectorAll('.menu-card').length);
+    </script>
+</body>
+</html>
